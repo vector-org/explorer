@@ -4,7 +4,7 @@
     "api": [
         {
             "provider": "PlayonVector",
-            "address": "https://archive-api-1.playonvector.com/"
+            "address": "https://archive-api-1.playonvector.com"
         },
         {
             "provider": "Seraphim",
@@ -14,7 +14,7 @@
     "rpc": [
         {
             "provider": "PlayonVector",
-            "address": "https://archive-rpc-1.playonvector.com/"
+            "address": "https://archive-rpc-1.playonvector.com"
         },
         {
             "provider": "Seraphim",
