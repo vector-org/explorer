@@ -12,6 +12,7 @@ import { Icon } from '@iconify/vue';
 const selectedTab = ref(localStorage.getItem('selectedTab') || 'Delegators');
 const amountTokens = ref(1000000);
 const tokenPrice = ref(0.1);
+const apr = ref(15);
 const staking = useStakingStore();
 const format = useFormatter();
 
@@ -20,19 +21,21 @@ const validatorSettings = reactive({
   validatorCommission: 5,
 });
 
-const apr = computed((isVal: boolean) => {
-  const commissionRate = Number(isVal ? validatorSettings.validatorCommission || 0 : 5) / 100;
-  const inflation = Number(useMintStore().inflation || 0);
-  const communityTax = Number(useDistributionStore().params.community_tax || 0);
-  const bondedTokens = Number(staking.pool.bonded_tokens || 1);
-  const totalSupply = Number(useBankStore().supply.amount);
-  const bondedRatio = bondedTokens / totalSupply;
-  if (bondedRatio === 0) return 0;
 
-  return format.percent(
-    (1 - communityTax) * inflation / bondedRatio
-  );
-});
+// Programmatically determine APR calculation
+// const apr = computed((isVal: boolean) => {
+//   const commissionRate = Number(isVal ? validatorSettings.validatorCommission || 0 : 5) / 100;
+//   const inflation = Number(useMintStore().inflation || 0);
+//   const communityTax = Number(useDistributionStore().params.community_tax || 0);
+//   const bondedTokens = Number(staking.pool.bonded_tokens || 1);
+//   const totalSupply = Number(useBankStore().supply.amount);
+//   const bondedRatio = bondedTokens / totalSupply;
+//   if (bondedRatio === 0) return 0;
+
+//   return format.percent(
+//     (1 - communityTax) * inflation / bondedRatio
+//   );
+// });
 
 const totalSupply = computed(() => {
   return Number(useBankStore().supply.amount);
@@ -41,7 +44,7 @@ const totalSupply = computed(() => {
 const calculateValidatorROI = computed(() => {
   const stake = Number(validatorSettings.validatorStake || 0);
   const commissionRate = Number(validatorSettings.validatorCommission || 0) / 100;
-  const aprValue = parseFloat(apr.value as string) / 100;
+  const aprValue = apr.value / 100;
   if (!aprValue) return 0;
   const price = Number(tokenPrice.value || 0);
 
@@ -53,7 +56,7 @@ const calculateDelegatorAPR = computed(() => {
   const price = Number(tokenPrice.value || 0);
   const commissionRate = Number(validatorSettings.validatorCommission || 0) / 100;
 
-  const aprValue = parseFloat(apr.value as string) / 100;
+  const aprValue = apr.value / 100;
   if (!aprValue) return 0;
 
   return Number((tokens * price * aprValue * (1 - commissionRate)).toFixed(2));
@@ -67,19 +70,21 @@ watch(selectedTab, (newTab) => {
 </script>
 
 <template>
-  <div class="apr-calculator bg-gray-800 p-4 rounded text-center w-[400px] mx-auto flex flex-col gap-3 items-center">
+  <div class="apr-calculator p-4 rounded text-center w-[400px] mx-auto flex flex-col gap-3 items-center">
     <!-- Tabs -->
     <div class="tabs-boxed bg-transparent flex justify-center  space-x-2 mb-4">
-      <button class="tab px-4 rounded" :class="selectedTab === 'Delegators' ? 'bg-vector-bg text-white' : 'bg-gray-700'"
+      <button class="tab px-4 rounded"
+        :class="selectedTab === 'Delegators' ? 'bg-vector-bg text-white' : 'bg-zinc-800 opacity-75'"
         @click="selectedTab = 'Delegators'">
         Delegators
       </button>
-      <button class="tab px-4 rounded" :class="selectedTab === 'Validators' ? 'bg-vector-bg text-white' : 'bg-gray-700'"
+      <button class="tab px-4 rounded"
+        :class="selectedTab === 'Validators' ? 'bg-vector-bg text-white' : 'bg-zinc-800 opacity-75'"
         @click="selectedTab = 'Validators'">
         Validators
       </button>
     </div>
-    <span class='badge py-4 px-4 bg-vector-bg text-white'>APR: {{ apr }}</span>
+    <span class='badge py-4 px-4 bg-vector-bg text-white'>APR: {{ apr }}%</span>
 
     <!-- Delegators View -->
     <div v-if="selectedTab === 'Delegators'" class="delegators-view">
@@ -91,6 +96,8 @@ watch(selectedTab, (newTab) => {
         </div>
         <label class="text-white pt-4">Token Price: ${{ tokenPrice }}</label>
         <input type="range" v-model="tokenPrice" min="0.01" max="100" step="0.01" class="slider" />
+        <label class="text-white pt-4">APR: {{ apr }}%</label>
+        <input type="range" v-model="apr" min="1" max="200" step="1" class="slider" />
 
         <div class="text-main mt-4 w-full card card-body bg-vector-bg">
           <div class="flex justify-center gap-1">
@@ -120,6 +127,8 @@ watch(selectedTab, (newTab) => {
         <input type="range" v-model="tokenPrice" min="0.01" max="100" step="0.01" class="slider" />
         <label class="text-white pt-4">Validator Commission: {{ validatorSettings.validatorCommission }}%</label>
         <input type="range" v-model="validatorSettings.validatorCommission" min="1" max="100" step="1" class="slider" />
+        <label class="text-white pt-4">APR: {{ apr }}%</label>
+        <input type="range" v-model="apr" min="1" max="200" step="1" class="slider" />
 
 
         <div class="text-main mt-4 w-full card card-body bg-vector-bg">
