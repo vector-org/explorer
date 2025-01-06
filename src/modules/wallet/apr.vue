@@ -143,6 +143,14 @@ watch(selectedTab, (newTab) => {
       </div>
     </div>
   </div>
+
+  <div role="alert" className="!max-w-[800px] !w-full mx-auto alert alert-warning !bg-vector-green ">
+    <Icon icon="mdi:info" width="24px" />
+
+    <span>The values displayed are for informational purposes only and may vary depending on multiple factors,
+      Actual results may differ from the
+      calculated estimates.</span>
+  </div>
 </template>
 
 <style>
