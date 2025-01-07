@@ -70,7 +70,7 @@ watch(selectedTab, (newTab) => {
 </script>
 
 <template>
-  <div class="apr-calculator p-4 rounded text-center w-[400px] mx-auto flex flex-col gap-3 items-center">
+  <div class="apr-calculator p-4 rounded text-center md:w-[400px] mx-auto flex flex-col gap-3 items-center">
     <!-- Tabs -->
     <div class="tabs-boxed bg-transparent flex justify-center  space-x-2 mb-4">
       <button class="tab px-4 rounded"
@@ -88,7 +88,7 @@ watch(selectedTab, (newTab) => {
 
     <!-- Delegators View -->
     <div v-if="selectedTab === 'Delegators'" class="delegators-view">
-      <div class="flex flex-col items-center space-y-4 card card-body bg-[#161616] w-[450px]">
+      <div class="flex flex-col items-center space-y-4 card card-body bg-[#161616] md:w-[450px]">
         <label class="text-white">Token Amount</label>
         <div class="flex items-center gap-2">
           <input type="number" v-model="amountTokens" min="1" :max="totalSupply" step="1"
@@ -151,6 +151,7 @@ watch(selectedTab, (newTab) => {
       Actual results may differ from the
       calculated estimates.</span>
   </div>
+
 </template>
 
 <style>

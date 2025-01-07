@@ -70,7 +70,7 @@ dayjs()
 </script>
 
 <template>
-  <div class="bg-gray-10 h-full">
+  <div class="bg-gray-10 h-full overflow-hidden">
     <!-- sidebar -->
     <div class="w-64 fixed max-xl:shadow-vector z-50 left-0 top-0 bottom-0 overflow-auto bg-vector-green"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }">
