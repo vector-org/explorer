@@ -3,22 +3,14 @@
     "registry_name": "vector",
     "api": [
         {
-            "provider": "PlayonVector",
-            "address": "https://archive-api-1.playonvector.com"
-        },
-        {
             "provider": "Seraphim",
-            "address": "https://archive-api-vector-1.seraphim.zone"
+            "address": "https://api-scalar-1.seraphim.zone"
         }
     ],
     "rpc": [
         {
-            "provider": "PlayonVector",
-            "address": "https://archive-rpc-1.playonvector.com"
-        },
-        {
             "provider": "Seraphim",
-            "address": "https://archive-rpc-vector-1.seraphim.zone"
+            "address": "https://rpc-scalar-1.seraphim.zone"
         }
     ],
     "sdk_version": "0.50.10",
